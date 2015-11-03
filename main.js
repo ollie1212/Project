@@ -16,7 +16,7 @@ function actor(Name, Health, Level){
 }
 
 
-var newUser = new actor("Ollie",2,1);
+var newUser = new actor("Ollie",200,1);
 newUser.Name = "bob";
 alert(newUser.Name);
 
