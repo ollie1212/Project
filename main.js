@@ -28,23 +28,22 @@ function coOrdinates(Xaxis, Yaxis) {
 }
 
 
-function actor(Name, Health, MaxHealth, Level, EXP, MaxEXP, CoOrdinates, MonDamage) {
+function actor(Name, Health, MaxHealth, Level, EXP, MaxEXP, CoOrdinates) {
     this.Name = Name;
     this.Health = Health;
     this.MaxHealth = MaxHealth;
     this.Level = Level;
     this.EXP = EXP;
     this.MaxEXP = MaxEXP;
-    this.CoOrdinates = new coOrdinates(0,0);
-	this.MonDamage = MonDamage;
+    this.CoOrdinates = new coOrdinates(0, 0);
 }
 
-var newUser = new actor("you", 200, 200, 1, 0, 20, coOrdinates(0,0), 0);
+var newUser = new actor("you", 200, 200, 1, 0, 20, coOrdinates(0, 0));
 var monsters = [
-    new actor("skeleton", 40, 40, 1, 15, 15, 0, 5),
-    new actor("wolf", 60, 60, 1, 20, 20, 0, 15),
-    new actor("highwayman", 200, 200, 3, 40, 40, 0, 40),
-    new actor("hobb", 120, 120, 2, 30, 30, 0, 30)
+    new actor("skeleton", 40, 40, 1, 15, 15, 0),
+    new actor("wolf", 60, 60, 1, 20, 20, 0),
+    new actor("highwayman", 200, 200, 3, 40, 40, 0),
+    new actor("hobb", 120, 120, 2, 30, 30, 0)
 ];
 
 function prefix(Name, DamageMod) {
@@ -83,14 +82,19 @@ function start() {
 function action() {
     var userInput = document.getElementById("userInput").value.toLowerCase();
     var strArray = userInput.split(" ");
-    if (count == 0) {
+    if (count == 0)
+    {
         currentMonsterHealth = chosenMonster.Health;
         count = 1;
-    } else {
+    } else
+    {
 
-        for (var i = 0; i < strArray.length; i++) {
-            for (var j = 0; j < weapon.length; j++) {
-                if (strArray[i] == weapon[j].Name) {
+        for (var i = 0; i < strArray.length; i++) 
+        {
+            for (var j = 0; j < weapon.length; j++) 
+            {
+                if (strArray[i] == weapon[j].Name) 
+                {
                     userWeapon = strArray[i];
                     userWeaponDamage = weapon[j].Damage;
                 }
@@ -101,38 +105,26 @@ function action() {
             for (var j = 0; j < actionArray.length; j++) {
                 if (strArray[i] == actionArray[j].Name) {
                     userAction = strArray[i];
-                    userActionDamage = actionArray[j].DamageMulti;
-					currentMonsterHealth = currentMonsterHealth - userWeaponDamage * userActionDamage;
-                    writeToTextArea("" + newUser.Name + " " + userAction + " " + chosenMonster.Name + " with " + userWeapon + " Dealing " + userWeaponDamage * userActionDamage);
-					writeToTextArea(chosenMonster.Name + " has " + currentMonsterHealth + " Health remaining");
-					
+                    userActionDamage = actionArray[j].DamageMulti
+                    //alert(currentMonsterHealth);
+                    userOverallDamage = userWeaponDamage * userActionDamage; //it is easier to put the overall damage in the textarea
+                    currentMonsterHealth = currentMonsterHealth - userOverallDamage;
+                    //alert(currentMonsterHealth);
+                    writeToTextArea("" + newUser.Name + " " + userAction + " with " + userWeapon + "\n" + newUser.Name + " dealt " + userOverallDamage + " damage to " + chosenMonster.Name + "\n" + chosenMonster.Name + "'s HP is now " + currentMonsterHealth);  
                 }
             }
         }
-		
-	
-	
-	
-		if(newUser.Health >= 0 && currentMonsterHealth >= 0)
-		{
-			newUser.Health = newUser.Health - chosenMonster.MonDamage;
-			writeToTextArea(chosenMonster.Name + " has Attacked you! Dealing: " + chosenMonster.MonDamage + " Damage" + " You have: " + newUser.Health + " Health remaining");
-		}else
-		{
-			writeToTextArea("You Have Been Defeated!");
-		}	
-	
-        
-		for (var i = 0; i < strArray.length; i++) {
+
+        for (var i = 0; i < strArray.length; i++) {
             if (strArray[i] == "check") {
                 for (var i = 0; i < strArray.length; i++) {
-                    for (var j = 0; j < keywordArray.length; j++) {
-
-                        if (strArray[i] == keywordArray[j]) {
+                    for (var j = 0; j < keywordArray.length; j++)
+                    {
+                        if (strArray[i] == keywordArray[j])
+                        {
                             userCheckKeyword = strArray[i];
-
-                            switch (userCheckKeyword) {
-
+                            switch (userCheckKeyword)
+                            {
                                 case "status":
                                     userStatus();
                                     break;
@@ -156,10 +148,7 @@ function action() {
                 }
             }
         }
-		
-		
-        
-		// might want to move this text parser somewhere else as i dont know where to put it
+        // might want to move this text parser somewhere else as i dont know where to put it
 
         for (var i = 0; i < strArray.length; i++) // this is the text parser for going around the map
         {
@@ -180,7 +169,7 @@ function action() {
                             else {
                                 writeToTextArea("You went " + directions[j].name);
                                 alert(newUser.CoOrdinates.Yaxis + "," + newUser.CoOrdinates.Xaxis)
-                                //document.getElementById("input").value = "";
+                                
 
                             }
                         }
@@ -189,9 +178,10 @@ function action() {
             }
         }
 
-       
+
         if (currentMonsterHealth <= 0) {
             monstersKilled.push(chosenMonster.Name);
+            //writeToTextArea("You gained " + chosenMonster.EXP + " EXP")
             newUser.EXP = newUser.EXP + chosenMonster.EXP; //adds the monster's exp to the user's current EXP
             while (newUser.EXP >= newUser.MaxEXP) {
                 newUser.Level = newUser.Level + 1; //increase level by one
@@ -204,6 +194,7 @@ function action() {
 
             }
             writeToTextArea("You gained " + chosenMonster.EXP + " EXP")
+
             spawnMonster(); // creates another monster to fight against
             count = 0;
         }
@@ -216,7 +207,8 @@ function writeToTextArea(string) {
 
 }
 // gen monster 
-function spawnMonster() {
+function spawnMonster() 
+{
     var rand = Math.floor(Math.random() * monsters.length);
     chosenMonster = monsters[rand];
     writeToTextArea("You are fighting: " + chosenMonster.Name);
