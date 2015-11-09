@@ -170,7 +170,9 @@ function action() {
             writeToTextArea(chosenMonster.Name + " has Attacked you! Dealing: " + chosenMonster.MonDamage + " Damage" + " You have: " + newUser.Health + " Health remaining");
         }
         if (newUser.Health <= 0) {
-            writeToTextArea("You Have Been Defeated!");
+            writeToTextArea("\n" + "\n" + "You Have Been Defeated!" + "\n" + "\n");
+            defeat();
+
         }
 
 
@@ -468,4 +470,14 @@ function enemyInfo()
     writeToTextArea("Enemy Information: ");
 
 
+}
+
+function defeat()
+{
+    newUser.Health = 200;
+    newUser.MaxHealth = 200;
+    newUser.Level = 1;
+    newUser.EXP = 0
+    newUser.MaxEXP = 20;
+    start();
 }
