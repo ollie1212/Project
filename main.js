@@ -163,94 +163,8 @@ function action() {
 
     var userInput = document.getElementById("userInput").value.toLowerCase();
     var strArray = userInput.split(" ");
-
-    if (playerTurn == 1)
-    {
-        
-        if (count == 0)
-        {
-            currentMonsterHealth = chosenMonster.Health;
-            count = 1;
-        }
-        else
-        {
-            //weapon text parser
-            for (var i = 0; i < strArray.length; i++)
-            {
-                for (var j = 0; j < weapon.length; j++)
-                {
-                    if (strArray[i] == weapon[j].Name)
-                    {
-                        userWeapon = strArray[i];
-                        userWeaponDamage = weapon[j].Damage;
-                        playerTurn = 0;
-                        enemyTurn = 1;
-                    }
-                }
-            }
-            //attack text parser
-            for (var i = 0; i < strArray.length; i++)
-            {
-                for (var j = 0; j < actionArray.length; j++)
-                {
-                    if (strArray[i] == actionArray[j].Name)
-                    {
-                        userAction = strArray[i];
-                        userActionDamage = actionArray[j].DamageMulti;
-                        userOverallDamage = userWeaponDamage * userActionDamage;
-                        currentMonsterHealth = currentMonsterHealth - userOverallDamage;
-                        writeToTextArea("" + newUser.Name + " " + userAction + " " + chosenMonster.Name + " with " + userWeapon + " Dealing " + userOverallDamage);
-                        writeToTextArea(chosenMonster.Name + " has " + currentMonsterHealth + " Health remaining");
-                        playerTurn = 0;
-                        enemyTurn = 1;
-                    }
-                }
-            }
-            //items text parser
-            for (var i = 0; i < strArray.length; i++)
-            {
-                for (var j = 0; j < items.length; j++)
-                {
-                    if (strArray[i] == items[j].Name)
-                    {
-                        if (items[j].Inventory == 0)
-                        {
-                            writeToTextArea(newUser.Name + " don't have " + items[j].Name + "s in your inventory");
-                        }
-                        else
-                        {
-                            newUser.Health = newUser.Health + items[j].Value;
-                            if (newUser.Health > newUser.MaxHealth)
-                            {
-                                newUser.Health = newUser.MaxHealth
-                            }
-                            playerTurn = 0;
-                            enemyTurn = 1;
-                            items[j].Inventory--;
-                            writeToTextArea("Your current health is " + newUser.Health + " " + newUser.Name + " have gained " + items[j].Value + "HP" + "\n" + "You have used " + items[j].Name);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    if (enemyTurn == 1)
-    {
-        playerTurn = 1;
-        enemyTurn = 0;
-        if (newUser.Health >= 0 && currentMonsterHealth >= 0)
-        {
-            newUser.Health = newUser.Health - chosenMonster.MonDamage;
-            writeToTextArea(chosenMonster.Name + " has Attacked you! Dealing: " + chosenMonster.MonDamage + " Damage" + " You have: " + newUser.Health + " Health remaining");
-        }
-        if (newUser.Health <= 0)
-        {
-            writeToTextArea("\n\n You Have Been Defeated!\n\n");
-            defeat();
-        }
-    }
-
+	
+	
     for (var i = 0; i < strArray.length; i++)
     {
         if (strArray[i] == "check")
@@ -269,18 +183,22 @@ function action() {
 
                             case "status":
                                 userStatus();
+								playerTurn = 0;
                                 break;
 
                             case "inventory":
                                 userInventory();
+								playerTurn = 0;
                                 break;
 
                             case "enemy":
                                 enemyInfo();
+								playerTurn = 0;
                                 break;
 
                             case "health":
                                 userHealth();
+								playerTurn = 0;
                                 break;
                         }
                     }
@@ -331,6 +249,7 @@ function action() {
                             }
                             else {
                                 writeToTextArea("You went " + directions[j].name);
+								playerTurn = 0;
                                 alert(newUser.CoOrdinates.Xaxis + "," + newUser.CoOrdinates.Yaxis)
                                 eventsGen();
                                 //document.getElementById("input").value = "";
@@ -502,6 +421,94 @@ function action() {
         count = 0;
 
     }
+	
+    if (playerTurn == 1)
+    {
+        
+        if (count == 0)
+        {
+            currentMonsterHealth = chosenMonster.Health;
+            count = 1;
+        }
+        else
+        {
+            //weapon text parser
+            for (var i = 0; i < strArray.length; i++)
+            {
+                for (var j = 0; j < weapon.length; j++)
+                {
+                    if (strArray[i] == weapon[j].Name)
+                    {
+                        userWeapon = strArray[i];
+                        userWeaponDamage = weapon[j].Damage;
+                        playerTurn = 0;
+                        enemyTurn = 1;
+                    }
+                }
+            }
+            //attack text parser
+            for (var i = 0; i < strArray.length; i++)
+            {
+                for (var j = 0; j < actionArray.length; j++)
+                {
+                    if (strArray[i] == actionArray[j].Name)
+                    {
+                        userAction = strArray[i];
+                        userActionDamage = actionArray[j].DamageMulti;
+                        userOverallDamage = userWeaponDamage * userActionDamage;
+                        currentMonsterHealth = currentMonsterHealth - userOverallDamage;
+                        writeToTextArea("" + newUser.Name + " " + userAction + " " + chosenMonster.Name + " with " + userWeapon + " Dealing " + userOverallDamage);
+                        writeToTextArea(chosenMonster.Name + " has " + currentMonsterHealth + " Health remaining");
+                        playerTurn = 0;
+                        enemyTurn = 1;
+                    }
+                }
+            }
+            //items text parser
+            for (var i = 0; i < strArray.length; i++)
+            {
+                for (var j = 0; j < items.length; j++)
+                {
+                    if (strArray[i] == items[j].Name)
+                    {
+                        if (items[j].Inventory == 0)
+                        {
+                            writeToTextArea(newUser.Name + " don't have " + items[j].Name + "s in your inventory");
+                        }
+                        else
+                        {
+                            newUser.Health = newUser.Health + items[j].Value;
+                            if (newUser.Health > newUser.MaxHealth)
+                            {
+                                newUser.Health = newUser.MaxHealth
+                            }
+                            playerTurn = 0;
+                            enemyTurn = 1;
+                            items[j].Inventory--;
+                            writeToTextArea("Your current health is " + newUser.Health + " " + newUser.Name + " have gained " + items[j].Value + "HP" + "\n" + "You have used " + items[j].Name);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if (enemyTurn == 1)
+    {
+        playerTurn = 1;
+        enemyTurn = 0;
+        if (newUser.Health >= 0 && currentMonsterHealth >= 0)
+        {
+            newUser.Health = newUser.Health - chosenMonster.MonDamage;
+            writeToTextArea(chosenMonster.Name + " has Attacked you! Dealing: " + chosenMonster.MonDamage + " Damage" + " You have: " + newUser.Health + " Health remaining");
+        }
+        if (newUser.Health <= 0)
+        {
+            writeToTextArea("\n\n You Have Been Defeated!\n\n");
+            defeat();
+        }
+    }
+
 
 }
 
@@ -513,7 +520,8 @@ function writeToTextArea(string)
 
 }
 // gen monster 
-function spawnMonster() {
+function spawnMonster() 
+{
     var rand = Math.floor(Math.random() * monsters.length);
     chosenMonster = monsters[rand];
     currentMonsterHealth = chosenMonster.Health;
@@ -521,7 +529,8 @@ function spawnMonster() {
 
 }
 
-function spawnChest() {
+function spawnChest() 
+{
     writeToTextArea("You found a chest");
     drops();
 }
@@ -537,6 +546,7 @@ function userStatus() {
 
 
 }
+        }
 
 function userInventory() {
 
@@ -544,14 +554,13 @@ function userInventory() {
     for (var i = 0; i < items.length; i++) {
         if (items[i].Inventory > 0) {
             writeToTextArea("Item Name: " + items[i].Name + " Quantity: " + items[i].Inventory);
-        }
     }
     writeToTextArea("Your Inventory: ");
 }
 
 function enemyInfo()
 {
-    writeToTextArea("You are currently fighitng: " + chosenMonster.Name);
+    writeToTextArea("You are currently fighting: " + chosenMonster.Name);
     writeToTextArea(chosenMonster.Name + " Spawned with " + chosenMonster.Health + "HP" + " and now has: " + currentMonsterHealth + "HP remaining " + " Keep fighting!");
     writeToTextArea("Enemy Information: ");
 }
